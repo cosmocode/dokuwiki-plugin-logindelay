@@ -1,0 +1,7 @@
+base   logindelay
+author Anna Dabrowska
+email  dokuwiki@cosmocode.de
+date   2021-04-06
+name   logindelay plugin
+desc   Delay login after failed attempts
+url    https://www.dokuwiki.org/plugin:logindelay
