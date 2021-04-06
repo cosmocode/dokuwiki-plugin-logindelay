@@ -42,8 +42,6 @@ class action_plugin_logindelay_login extends DokuWiki_Action_Plugin
         if ($delay > 0) {
             $event->preventDefault();
             $this->displayMessage($delay);
-        } else {
-            $logHelper->clearFailStrikes();
         }
     }
 
@@ -74,8 +72,8 @@ class action_plugin_logindelay_login extends DokuWiki_Action_Plugin
             if ($logHelper->putFailStrike() > $this->getConf('maxFailures')) {
                 $delay = $logHelper->calculateDelay();
                 $this->displayMessage($delay);
-                return;
             }
+            return;
         }
 
         // successful login, clear any previous failures
