@@ -55,7 +55,13 @@ class action_plugin_logindelay_login extends DokuWiki_Action_Plugin
         global $ACT;
         if ($ACT !== 'login') return;
 
-        $authenticatedUser = isset($_SESSION[DOKU_COOKIE]['auth']['user'])?$_SESSION[DOKU_COOKIE]['auth']['user']:null;
+        if( isset($_SESSION[DOKU_COOKIE]['auth']['user']) ) { // Since "2013-05-10 Weatherwax"
+            $authenticatedUser = $_SESSION[DOKU_COOKIE]['auth']['user'];
+        } else if(isset($_SERVER['REMOTE_USER'])){ // Before "2013-05-10 Weatherwax"
+            $authenticatedUser = $_SERVER['REMOTE_USER'] ;
+        } else { // Not logged in
+            $authenticatedUser = null ;
+        }
 
         $loginUser = $event->data['user'];
 
