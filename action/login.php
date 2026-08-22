@@ -1,22 +1,25 @@
 <?php
+
+use dokuwiki\Extension\ActionPlugin;
+use dokuwiki\Extension\EventHandler;
+use dokuwiki\Extension\Event;
+
 /**
  * DokuWiki Plugin logindelay (Action Component)
  *
  * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  * @author  Anna Dabrowska <dokuwiki@cosmocode.de>
  */
-
-class action_plugin_logindelay_login extends DokuWiki_Action_Plugin
+class action_plugin_logindelay_login extends ActionPlugin
 {
-
     /**
      * Registers a callback function for a given event
      *
-     * @param Doku_Event_Handler $controller DokuWiki's event controller object
+     * @param EventHandler $controller DokuWiki's event controller object
      *
      * @return void
      */
-    public function register(Doku_Event_Handler $controller)
+    public function register(EventHandler $controller)
     {
         $controller->register_hook('AUTH_LOGIN_CHECK', 'BEFORE', $this, 'checkDelay');
         $controller->register_hook('AUTH_LOGIN_CHECK', 'AFTER', $this, 'processLoginAttempt');
@@ -25,9 +28,9 @@ class action_plugin_logindelay_login extends DokuWiki_Action_Plugin
     /**
      * Check if login attempt should be allowed or delayed
      *
-     * @param Doku_Event $event
+     * @param Event $event
      */
-    public function checkDelay(Doku_Event $event)
+    public function checkDelay(Event $event)
     {
         $user = $event->data['user'];
 
@@ -48,9 +51,9 @@ class action_plugin_logindelay_login extends DokuWiki_Action_Plugin
     /**
      * Check status of login attempt on the result of auth_login_wrapper()
      *
-     * @param Doku_Event $event
+     * @param Event $event
      */
-    public function processLoginAttempt(Doku_Event $event)
+    public function processLoginAttempt(Event $event)
     {
         global $ACT;
         global $INPUT;
@@ -91,4 +94,3 @@ class action_plugin_logindelay_login extends DokuWiki_Action_Plugin
         msg(sprintf($this->getLang('errorMessage'), $allowedRetry), -1);
     }
 }
-

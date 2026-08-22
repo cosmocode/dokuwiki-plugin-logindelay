@@ -1,9 +1,11 @@
 <?php
 
+use dokuwiki\Extension\Plugin;
+
 /**
  * Class helper_plugin_logindelay_log
  */
-class helper_plugin_logindelay_log extends DokuWiki_Plugin
+class helper_plugin_logindelay_log extends Plugin
 {
     /**
      * @var string Absolute path to a user's stat file
@@ -64,7 +66,7 @@ class helper_plugin_logindelay_log extends DokuWiki_Plugin
         $strikes = $this->readStrikes();
         if ($strikes < $this->getConf('maxFailures')) return 0;
 
-        $delay = $this->getConf('initialDelay') * pow(2, ($strikes - $this->getConf('maxFailures')));
+        $delay = $this->getConf('initialDelay') * 2 ** ($strikes - $this->getConf('maxFailures'));
         $remainingDelay = $delay - (time() - filemtime($this->statFile)) / 60;
         return (int) $remainingDelay >= 0 ? ceil($remainingDelay) : 0;
     }
